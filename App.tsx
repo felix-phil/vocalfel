@@ -1,20 +1,37 @@
-import { StatusBar } from 'expo-status-bar';
-import { StyleSheet, Text, View } from 'react-native';
+import { StatusBar } from "expo-status-bar";
+import { StyleSheet, Text, View, useColorScheme, LogBox } from "react-native";
+import AnimatedAppLoader from "./components/providers/AnimatedAppLoader";
+import { Provider as StoreProvider } from "react-redux";
+import ThemeAndNavigationProvider from "./components/providers/ThemeAndNavigationProvider";
+import RootNavigation from "./routes";
+import store from "./store";
 
-export default function App() {
+LogBox.ignoreLogs(["BSON: For React Native"]);
+const Main = () => {
   return (
-    <View style={styles.container}>
-      <Text>Open up App.tsx to start working on your app!</Text>
-      <StatusBar style="auto" />
-    </View>
+    <StoreProvider store={store}>
+      <ThemeAndNavigationProvider>
+        <RootNavigation />
+      </ThemeAndNavigationProvider>
+    </StoreProvider>
   );
-}
+};
+
+const App = () => {
+  const splashImage = require("./assets/splash.png");
+  return (
+    <AnimatedAppLoader image={splashImage}>
+      <Main />
+    </AnimatedAppLoader>
+  );
+};
+export default App;
 
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    backgroundColor: '#fff',
-    alignItems: 'center',
-    justifyContent: 'center',
+    // backgroundColor: "#fff",
+    alignItems: "center",
+    justifyContent: "center",
   },
 });
